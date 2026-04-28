@@ -279,7 +279,6 @@ header, nav {
     }
     /* Melhora a acessibilidade para quem navega via TAB */
 .nav-arrow:focus {
-    outline: 20px solid #FF1D6E;
     outline-offset: 20px;
 }
 .nav-arrow {

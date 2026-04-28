@@ -1,0 +1,165 @@
+/* ================================================================
+   BOTÃO AO VIVO (Header) - Estados Ativo e Inativo
+   ================================================================ */
+
+.btn-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 16px;
+  border-radius: 9999px; /* Formato totalmente arredondado */
+  font-family: 'Inter', 'Barlow', sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+/* --- ESTADO ATIVO (Quando tem Live) --- */
+.btn-live.active {
+  /* Mescla do Rosa CIEBP com um toque de Azul na ponta */
+  background: linear-gradient(950deg, #FF007A 0%, #E91E8C 60%, #0C87D1 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  /* Sombra (Glow) que pisca */
+  animation: piscarGlow 1.5s infinite alternate;
+  cursor: pointer;
+}
+
+.btn-live.active:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Bolinha branca interna piscando mais rápido */
+.btn-live.active .live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #FFFFFF;
+  animation: piscarDot 0.8s infinite alternate;
+}
+
+/* --- ESTADO INATIVO (Sem Live) --- */
+.btn-live.inactive {
+  background-color: #F3F4F6; /* Fundo cinza bem claro/desbotado */
+  color: #9CA3AF; /* Texto claro */
+  border: 1px solid #D1D5DB;
+  box-shadow: none;
+  pointer-events: none; /* Remove a capacidade de clique */
+  cursor: default;
+}
+
+/* Bolinha apagada no inativo */
+.btn-live.inactive .live-dot {
+  width: 6px;
+  height: 6 px;
+  background-color: #9CA3AF;
+  border-radius: 50%;
+}
+
+/* --- ANIMAÇÕES (KEYFRAMES) --- */
+@keyframes piscarGlow {
+  from {
+    /* Sombra menor combinando Rosa e Azul */
+    box-shadow: 0 0 6px rgba(255, 0, 122, 0.5), 0 0 8px rgba(12, 135, 209, 0.3);
+  }
+  to {
+    /* Sombra maior combinando Rosa e Azul */
+    box-shadow: 0 0 14px rgba(255, 0, 122, 0.9), 0 0 18px rgba(12, 135, 209, 0.7);
+  }
+}
+
+@keyframes piscarDot {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0.3; transform: scale(0.8); }
+}
+
+/* ================================================================
+   BOTÃO AO VIVO - Design Responsivo e Glow Suave
+   ================================================================ */
+
+.btn-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* Espaço menor no celular */
+  padding: 2px 10px; /* Preenchimento menor no celular */
+  border-radius: 9999px;
+  font-family: 'Inter', 'Barlow', sans-serif;
+  font-weight: 800;
+  font-size: 0.60rem; /* Fonte menor no celular */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  width: max-content;
+}
+
+/* Tamanho Normal para Tablets e Desktop */
+@media (min-width: 640px) {
+  .btn-live {
+    gap: 6px;
+    padding: 4px 16px;
+    font-size: 0.75rem;
+  }
+}
+
+/* --- ESTADO ATIVO (Quando tem Live) - Com tom mais leve (solução anterior) --- */
+.btn-live.active {
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)),
+    linear-gradient(90deg, #FF007A 0%, #E91E8C 60%, #0C87D1 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  animation: piscarGlow 1.5s infinite alternate;
+  cursor: pointer;
+}
+
+.btn-live.active:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.btn-live.active .live-dot {
+  width: 6px; height: 6px; /* Bolinha menor no mobile */
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #FFFFFF;
+}
+
+@media (min-width: 640px) {
+  .btn-live.active .live-dot {
+    width: 8px; height: 8px;
+  }
+}
+
+/* --- ESTADO INATIVO (Sem Live) --- */
+.btn-live.inactive {
+  background-color: #F3F4F6;
+  color: #9CA3AF;
+  border: 1px solid #D1D5DB;
+  box-shadow: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.btn-live.inactive .live-dot {
+  width: 6px; height: 6px;
+  background-color: #9CA3AF;
+  border-radius: 50%;
+}
+
+@media (min-width: 640px) {
+  .btn-live.inactive .live-dot { width: 8px; height: 8px; }
+}
+
+/* --- ANIMAÇÕES (KEYFRAMES) --- */
+@keyframes piscarGlow {
+  from { box-shadow: 0 0 6px rgba(255, 0, 122, 0.5), 0 0 8px rgba(12, 135, 209, 0.3); }
+  to   { box-shadow: 0 0 14px rgba(255, 0, 122, 0.9), 0 0 18px rgba(12, 135, 209, 0.7); }
+}

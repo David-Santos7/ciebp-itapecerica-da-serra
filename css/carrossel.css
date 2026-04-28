@@ -1,33 +1,241 @@
-/* Estilo do Slide Específico */
-.image1 {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 50px;
-    min-height: 450px;
-    
-    /* Configuração do Fundo solicitada */
-    background-color: #d4068c; /* Cor Hexadecimal */
-    background-image: url('caminho-da-sua-imagem-de-textura.png'); /* Se houver imagem de fundo */
+/* ================================================================
+   MÓDULO: BACKGROUNDS DE SEÇÃO (FOSCO)
+================================================================ */
+.tutorial-section {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 40px;
+}
+.tutorial-section::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: var(--bg-img, none); 
     background-size: cover;
     background-position: center;
-    
+    background-attachment: fixed;
+    opacity: 0.10; 
+    filter: grayscale(80%) blur(2px); 
+    z-index: 0; 
+    pointer-events: none; 
+}
+
+/* ================================================================
+   MÓDULO: HERO CARROUSEL TECH (Swipe Nativo e Auto-Play)
+================================================================ */
+.hero-ciebp {
+    position: relative;
+    background-color: #F4F6FB; 
+    height: 85vh;
+    min-height: 550px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    user-select: none;
+}
+.carousel-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 5;
+}
+.carousel-track {
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; 
+}
+.carousel-track::-webkit-scrollbar {
+    display: none; 
+}
+.slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5%;
+    scroll-snap-align: start; 
+}
+/* Ajuste no container para centralizar e aproximar os blocos */
+.slide-content {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Mudado de between para center */
+    gap: 1rem; /* Define a proximidade exata entre texto e imagem */
+    width: 100%;
+    max-width: 1400px;
+}
+
+/* Texto: ajuste de flex e padding */
+.col-text {
+    flex: 0 1 40%; 
+    padding-left: 70px; /* Removido para o texto não fugir do centro */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 10;
+}
+
+/* Coluna Visual: maior base de crescimento */
+.col-visual {
+    flex: 0 1 100%; /* Aumentado para permitir que a imagem cresça mais */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Moldura da Imagem: Expansão dos limites */
+.image-frame {
+    /* Aumentamos o limite de 750px para 950px e a altura para 580px */
+    width: clamp(300px, 50vw, 950px); 
+    height: clamp(250px, 40vw, 580px);
     border-radius: 20px;
-    color: white;
-    font-family: sans-serif;
+    border: 4px solid #FFFFFF;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 20px 40px rgba(25, 51, 117, 0.15);
 }
 
-/* Destaque do título em Rosa (usando a cor solicitada) */
-.image1 h1 span {
-    color: #ffffff; /* No fundo rosa, o texto pode ser branco para leitura */
-}
-
-.btn {
-    background: white;
-    color: #d4068c;
-    border: 2px solid #d4068c;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
+.badge-tema {
+    display: inline-block;
+    color: #0C87D1;
     font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: #eff6ff;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    border: 1px solid #bfdbfe;
+}
+.title-primary {
+    font-family: 'Bebas Neue', sans-serif; 
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #193375;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+.highlight { color: #FF1D6E; }
+.subtitle {
+    font-family: 'Barlow', sans-serif;
+    color: #4B5563;
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    font-weight: 500;
+    max-width: 95%;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+/* ================================================================
+   MOLDURA DA IMAGEM (Fundo Transparente para o Robô Flutuar)
+================================================================ */
+.image-frame {
+    /* Mantém o tamanho grande que ajustamos antes */
+    width: clamp(300px, 60vw, 950px); 
+    height: clamp(350px, 37vw, 750px); 
+    
+    /* 1. O SEGREDO: Removemos o fundo, a borda e a sombra quadrada */
+    background: transparent;
+    border: none;
+    box-shadow: none; 
+    
+    /* Mudamos de 'hidden' para 'visible' para o robô não ser cortado se chegar à borda */
+    overflow: visible; 
+    position: relative;
+    z-index: 2;
+}
+
+/* 2. TRUQUE SÊNIOR: Sombra projetada no formato exato do Robô */
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    
+    /* 'contain' garante que o robô inteiro apareça sem ser cortado */
+    object-fit: contain; 
+    
+    /* Em vez de uma sombra quadrada na caixa, usamos drop-shadow para a sombra seguir o contorno do robô! */
+    filter: drop-shadow(0 20px 30px rgba(25, 51, 117, 0.25)); 
+}   
+
+.orbital-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.orbital-line {
+    position: absolute;
+    width: 115%;
+    height: 115%;
+    border: 3px solid rgba(255, 29, 110, 0.6);
+    border-radius: 35%;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(255, 29, 110, 0.2);
+    animation: spinOrbit 25s linear infinite;
+}
+@keyframes spinOrbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: #FFFFFF;
+    color: #193375;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+.nav-arrow:hover {
+    background: #FF1D6E;
+    color: #FFFFFF;
+    transform: translateY(-50%) scale(1.1);
+}
+.prev { left: 20px; }
+.next { right: 20px; }
+.btn-cta {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #0C87D1;
+    color: #FFFFFF;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(12, 135, 209, 0.3);
+}
+.btn-cta:hover {
+    background-color: #0a6da8;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 992px) {
+    .hero-ciebp { height: auto; padding: 2rem 0; }
+    .slide-content { flex-direction: column; text-align: center; gap: 2.5rem; }
+    .col-text { align-items: center; order: 2; }
+    .col-visual { order: 1; }
+    .nav-arrow { display: none; }
+    .orbital-line { width: 110%; height: 110%; border-width: 2px; }
 }

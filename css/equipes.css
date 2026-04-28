@@ -1,0 +1,112 @@
+/* ================================================================
+   TABELA DE EQUIPES - PADRÃO CIEBP (Refatorado)
+   ================================================================ */
+
+.tabela-ciebp-container {
+    max-width: 1200px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1rem;
+}
+
+/* Caixa principal com sombra e bordas arredondadas */
+.tabela-ciebp-wrapper {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+    overflow: hidden; /* Mantém os cantos arredondados limpos */
+}
+
+/* Cabeçalho Azulão (Padrão Imagem 2) */
+.tabela-ciebp-header {
+    background-color: #193375; /* Azul CIEBP */
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid rgba(12, 135, 209, 0.3);
+}
+
+.tabela-ciebp-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+/* Estrutura da Tabela */
+.tabela-ciebp {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.tabela-ciebp thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabela-ciebp th {
+    padding: 1rem 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: #193375;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tabela-ciebp tbody {
+    font-family: 'Barlow', sans-serif;
+    color: #374151;
+}
+
+.tabela-ciebp td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    transition: all 0.2s ease;
+}
+
+/* Base de estilo para textos importantes */
+.escola-nome {
+    font-weight: 600;
+    color: #193375;
+    transition: color 0.2s ease;
+}
+
+/* Badge (Pílula) da Equipe */
+.equipe-badge {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    background-color: #f3f4f6;
+    color: #193375;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+/* ================================================================
+   A MÁGICA DO HOVER (Interação Solicitada)
+   ================================================================ */
+
+.tabela-ciebp tbody tr {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Quando passa o mouse na LINHA INTEIRA */
+.tabela-ciebp tbody tr:hover {
+    background-color: rgba(255, 29, 110, 0.05); /* Fundo rosa bem suave */
+    color: #FF1D6E; /* Texto geral fica rosa */
+    font-weight: 700; /* Texto fica bold */
+}
+
+/* Alterando os elementos internos quando a linha sofre hover */
+.tabela-ciebp tbody tr:hover .escola-nome {
+    color: #FF1D6E;
+}
+
+.tabela-ciebp tbody tr:hover .equipe-badge {
+    background-color: rgba(255, 29, 110, 0.15); /* Fundo da pílula fica rosa */
+    color: #FF1D6E;
+}

@@ -2,7 +2,7 @@
    CIEBP — CAMPEONATO ESCOLAR DE FUTEBOL DE ROBÔS
    Arquivo: style.css (Design System & Estilos Globais)
    ================================================================ */
-
+    
 /* ----------------------------------------------------------------
    1. DESIGN SYSTEM (Tokens de Cor e Variáveis)
    ---------------------------------------------------------------- */
@@ -63,22 +63,12 @@ body::before {
 /* ----------------------------------------------------------------
    3. HEADER & NAVEGAÇÃO
    ---------------------------------------------------------------- */
-.logo-hex {
-    width: 85px;
-    height: 85px;
+   /* Atualize as classes no CSS, removendo width, height e font-size desnecessários */
+.logo-hex, .logo-ciebp {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-}
-
-.logo-ciebp {
-    width: 55px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
 }
 
 
@@ -150,6 +140,14 @@ header nav a:hover::after, header nav a.active::after {
     border-radius: 5px;
 }
 
+.linha-rosa-tutorial {
+    background-color: #FF1D6E;
+    border: none;
+    height: 15px;
+    width: 100%;
+    border-radius: 5px;
+}
+    
 /* Badge "AO VIVO" */
 .badge-live {
     display: flex;

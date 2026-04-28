@@ -1,76 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const track = document.getElementById('track');
-  if (!track) return; 
+    
+    /* ==========================================
+       LÓGICA DO CARROSSEL (Auto-Play + Setas)
+    ========================================== */
+    const track = document.getElementById('track');
+    const btnNext = document.getElementById('btnNext');
+    const btnPrev = document.getElementById('btnPrev');
+    
+    if(track) {
+        const scrollNext = () => {
+            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' }); 
+            } else {
+                track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+            }
+        };
 
-  const slides = Array.from(track.children);
-  if (slides.length <= 1) return;
+        const scrollPrev = () => {
+            track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+        };
 
-  const nextBtn = document.querySelector('.next');
-  const prevBtn = document.querySelector('.prev');
+        if(btnNext) btnNext.addEventListener('click', scrollNext);
+        if(btnPrev) btnPrev.addEventListener('click', scrollPrev);
 
-  let index = 1;
-  const slideWidth = 100; 
-  let isMoving = false; 
+        // Auto-Play
+        let autoPlayInterval = setInterval(scrollNext, 5000);
 
-  // Clonagem (Mantida do seu código)
-  const firstClone = slides[0].cloneNode(true);
-  const lastClone = slides[slides.length - 1].cloneNode(true);
-  track.appendChild(firstClone);
-  track.prepend(lastClone);
-  track.style.transform = `translateX(-${index * slideWidth}%)`;
-
-  function updateSlide() {
-    isMoving = true;
-    track.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)";
-    track.style.transform = `translateX(-${index * slideWidth}%)`;
-  }
-
-  // --- NOVA FUNÇÃO: AUTO PLAY ---
-  let autoPlayInterval = setInterval(moveNext, 8000);
-
-  function moveNext() {
-    if (isMoving) return;
-    index++;
-    updateSlide();
-  }
-
-  function resetInterval() {
-    clearInterval(autoPlayInterval);
-    autoPlayInterval = setInterval(moveNext, 8000);
-  }
-
-  // Pausar ao passar o mouse (opcional, mas recomendado)
-  track.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
-  track.addEventListener('mouseleave', () => resetInterval());
-  // ------------------------------
-
-  track.addEventListener('transitionend', () => {
-    isMoving = false; 
-    if (index >= slides.length + 1) {
-      track.style.transition = 'none';
-      index = 1;
-      track.style.transform = `translateX(-${index * slideWidth}%)`;
+        // Pausa se o utilizador interagir
+        track.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        track.addEventListener('mouseleave', () => autoPlayInterval = setInterval(scrollNext, 5000));
+        track.addEventListener('touchstart', () => clearInterval(autoPlayInterval));
     }
-    if (index <= 0) {
-      track.style.transition = 'none';
-      index = slides.length;
-      track.style.transform = `translateX(-${index * slideWidth}%)`;
+
+    /* ==========================================
+       LÓGICA DO MODAL DE MAPA
+    ========================================== */
+    const modal = document.getElementById('mapModal');
+    const btnOpenMap = document.getElementById('btnOpenMap');
+    const btnCloseMap = document.getElementById('btnCloseMap');
+    const modalContent = document.getElementById('mapModalContent');
+
+    if(modal && btnOpenMap && btnCloseMap) {
+        const openModal = () => {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        };
+
+        const closeModal = () => {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        };
+
+        btnOpenMap.addEventListener('click', openModal);
+        btnCloseMap.addEventListener('click', closeModal);
+
+        // Fechar ao clicar fora ou Esc
+        modal.addEventListener('click', (e) => {
+            if (!modalContent.contains(e.target)) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+        });
     }
-  });
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      moveNext();
-      resetInterval(); // Reinicia o contador ao clicar manualmente
-    });
-  }
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      if (isMoving) return;
-      index--;
-      updateSlide();
-      resetInterval();
-    });
-  }
 });

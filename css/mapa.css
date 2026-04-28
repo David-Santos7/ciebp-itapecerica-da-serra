@@ -1,0 +1,14 @@
+/* Customiza o visual do Iframe se desejar dar um aspecto mais premium */
+.custom-map-iframe {
+  transition: all 0.3s ease;
+  filter: grayscale(20%) contrast(1.1); /* Deixa o mapa levemente com tons mais pastéis */
+}
+
+.custom-map-iframe:hover {
+  filter: grayscale(0%) contrast(1); /* Devolve a cor original quando o usuário passa o mouse */
+}
+
+/* Oculta barra de rolagem no body quando o modal estiver aberto para evitar bug visual */
+body:has(#mapModal:not(.hidden)) {
+  overflow: hidden;
+}

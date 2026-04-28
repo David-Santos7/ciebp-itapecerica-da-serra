@@ -1,0 +1,23 @@
+.tutorial-section {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+
+.tutorial-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  
+  /* Aqui a mágica acontece: ele lê a URL diferente de cada section */
+  background-image: var(--bg-img, none); 
+  background-size: cover;
+  background-position: center;
+  
+  /* Efeito Fosco / Discreto */
+  opacity: 0.10; 
+  filter: grayscale(80%) blur(2px); 
+  
+  z-index: 0; 
+  pointer-events: none; 
+}
