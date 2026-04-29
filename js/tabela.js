@@ -1,159 +1,197 @@
-/* ============================================================
-   CIEBP – Sistema de Torneio (Supabase)
-   ============================================================ */
+// ===============================
+// 🔌 CONFIG SUPABASE
+// ===============================
+const supabaseUrl = 'https://SEU-PROJETO.supabase.co';
+const supabaseKey = 'SUA-CHAVE-ANON';
 
-let TIMES = [];
-let MATCHES = [];
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-/* =========================
-   CARREGAR TIMES
-========================= */
-async function loadTimes() {
-    const { data, error } = await supabase
-        .from("futebol_robos")
-        .select("*")
-        .order("id");
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    TIMES = data;
-    renderTimes();
-}
-
-/* =========================
-   RENDER TIMES
-========================= */
-function renderTimes() {
-    const tbody = document.getElementById("table-body");
-    if (!tbody) return;
-
-    if (TIMES.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3">Nenhum time</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = TIMES.map(t => `
-        <tr>
-            <td class="p-3">${t.escola}</td>
-            <td class="p-3">${t.time}</td>
-            <td class="p-3 text-red-500 cursor-pointer"
-                onclick="deleteTime(${t.id})">Excluir</td>
-        </tr>
-    `).join("");
-}
-
-/* =========================
-   ADICIONAR TIME
-========================= */
+// ===============================
+// ➕ ADICIONAR TIME
+// ===============================
 async function addTime() {
-    const escola = document.getElementById("input-escola").value;
-    const time = document.getElementById("input-time").value;
+  const escola = document.getElementById('input-escola').value.trim();
+  const nome = document.getElementById('input-time').value.trim();
 
-    if (!escola || !time) return alert("Preencha tudo");
+  if (!escola || !nome) {
+    alert("Preencha todos os campos");
+    return;
+  }
 
-    await supabase.from("futebol_robos").insert([{ escola, time }]);
+  const { error } = await supabase
+    .from('teams')
+    .insert([{ escola, nome }]);
 
-    document.getElementById("input-escola").value = "";
-    document.getElementById("input-time").value = "";
+  if (error) {
+    console.error(error);
+    alert("Erro ao cadastrar time");
+  } else {
+    document.getElementById('input-escola').value = '';
+    document.getElementById('input-time').value = '';
 
-    loadTimes();
+    carregarTimes();
+  }
 }
 
-/* =========================
-   DELETAR TIME
-========================= */
-async function deleteTime(id) {
-    if (!confirm("Excluir?")) return;
+// ===============================
+// 📋 LISTAR TIMES
+// ===============================
+async function carregarTimes() {
+  const { data, error } = await supabase
+    .from('teams')
+    .select('*')
+    .order('created_at', { ascending: true });
 
-    await supabase.from("futebol_robos").delete().eq("id", id);
-    loadTimes();
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  data.forEach(team => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td class="p-3">${team.escola}</td>
+      <td class="p-3 font-semibold">${team.nome}</td>
+      <td class="p-3">
+        <button onclick="removerTime(${team.id})"
+          class="text-red-500 hover:underline">
+          Remover
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('row-count').innerText =
+    `${data.length} times cadastrados`;
 }
 
-/* =========================
-   GERAR CHAVEAMENTO
-========================= */
+// ===============================
+// ❌ REMOVER TIME
+// ===============================
+async function removerTime(id) {
+  if (!confirm("Remover este time?")) return;
+
+  const { error } = await supabase
+    .from('teams')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error(error);
+    alert("Erro ao remover");
+  } else {
+    carregarTimes();
+  }
+}
+
+// ===============================
+// 🧠 GERAR CHAVEAMENTO (RPC)
+// ===============================
 async function gerarChaveamento() {
-    const { error } = await supabase.rpc("gerar_chaveamento");
+  const { error } = await supabase.rpc('gerar_chaveamento');
 
-    if (error) {
-        console.error(error);
-        alert("Erro ao gerar chaveamento");
-        return;
-    }
-
-    loadMatches();
+  if (error) {
+    console.error(error);
+    alert("Erro ao gerar chaveamento");
+  } else {
+    alert("Chaveamento gerado com sucesso!");
+    carregarChaveamento();
+  }
 }
 
-/* =========================
-   CARREGAR PARTIDAS
-========================= */
-async function loadMatches() {
-    const { data, error } = await supabase
-        .from("matches")
-        .select("*")
-        .order("round_number");
+// ===============================
+// 📊 CARREGAR CHAVEAMENTO
+// ===============================
+async function carregarChaveamento() {
+  const { data, error } = await supabase
+    .from('matches')
+    .select(`
+      id,
+      round,
+      match_number,
+      next_match_id,
+      team_a:team_a_id (nome),
+      team_b:team_b_id (nome)
+    `)
+    .order('round', { ascending: true })
+    .order('match_number', { ascending: true });
 
-    if (error) {
-        console.error(error);
-        return;
-    }
+  if (error) {
+    console.error(error);
+    return;
+  }
 
-    MATCHES = data;
-    renderMatches();
+  renderBracket(data);
 }
 
-/* =========================
-   RENDER CHAVEAMENTO
-========================= */
-function renderMatches() {
-    const container = document.getElementById("bracket-ui");
-    if (!container) return;
+// ===============================
+// 🏆 RENDER CHAVEAMENTO (ESTILO COPA)
+// ===============================
+function renderBracket(matches) {
+  const container = document.getElementById('bracket-ui');
+  container.innerHTML = '';
 
-    if (MATCHES.length === 0) {
-        container.innerHTML = "Nenhum chaveamento ainda";
-        return;
+  // agrupar por rodada
+  const rounds = {};
+
+  matches.forEach(match => {
+    if (!rounds[match.round]) {
+      rounds[match.round] = [];
     }
+    rounds[match.round].push(match);
+  });
 
-    container.innerHTML = MATCHES.map(m => `
-        <div class="bg-white p-4 mb-3 rounded shadow">
-            <strong>Rodada ${m.round_number}</strong><br>
-            <div class="flex justify-between">
-                <span onclick="setWinner(${m.id}, '${m.team_a}')"
-                      class="cursor-pointer">${m.team_a}</span>
-                <span onclick="setWinner(${m.id}, '${m.team_b}')"
-                      class="cursor-pointer">${m.team_b}</span>
-            </div>
-            <div class="text-sm text-gray-500 mt-2">
-                Vencedor: ${m.winner || "-"}
-            </div>
+  // criar colunas
+  const bracket = document.createElement('div');
+  bracket.className = "flex gap-10 overflow-x-auto";
+
+  Object.keys(rounds).forEach(round => {
+    const column = document.createElement('div');
+    column.className = "flex flex-col gap-6";
+
+    const title = document.createElement('h3');
+    title.className = "font-bold text-[#193375]";
+    title.innerText = `Rodada ${round}`;
+
+    column.appendChild(title);
+
+    rounds[round].forEach(match => {
+      const card = document.createElement('div');
+
+      card.className = `
+        bg-gray-50 border rounded-lg p-3 shadow
+        w-[200px]
+      `;
+
+      card.innerHTML = `
+        <div class="font-semibold">
+          ${match.team_a?.nome || 'BYE'}
         </div>
-    `).join("");
+        <div class="text-center text-gray-400">vs</div>
+        <div class="font-semibold">
+          ${match.team_b?.nome || 'BYE'}
+        </div>
+      `;
+
+      column.appendChild(card);
+    });
+
+    bracket.appendChild(column);
+  });
+
+  container.appendChild(bracket);
 }
 
-/* =========================
-   DEFINIR VENCEDOR
-========================= */
-async function setWinner(matchId, winner) {
-    await supabase
-        .from("matches")
-        .update({ winner })
-        .eq("id", matchId);
-
-    loadMatches();
-}
-
-/* =========================
-   INIT
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
-    loadTimes();
-    loadMatches();
+// ===============================
+// 🚀 INIT
+// ===============================
+document.addEventListener('DOMContentLoaded', () => {
+  carregarTimes();
+  carregarChaveamento();
 });
-
-window.addTime = addTime;
-window.deleteTime = deleteTime;
-window.gerarChaveamento = gerarChaveamento;
-window.setWinner = setWinner;
