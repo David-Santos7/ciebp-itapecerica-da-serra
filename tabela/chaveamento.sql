@@ -9,6 +9,13 @@ declare
     i int;
 begin
     select array_agg(time) into teams from futebol_robos;
+
+    -- 🔥 CORREÇÃO CRÍTICA
+    if teams is null then
+        raise notice 'Sem times cadastrados';
+        return;
+    end if;
+
     total := array_length(teams, 1);
 
     while size < total loop

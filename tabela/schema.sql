@@ -11,17 +11,23 @@ create table if not exists matches (
   team_a text,
   team_b text,
   winner text,
-
-  -- ✅ ADICIONADO
   parent_match_id bigint,
   slot_in_parent text
 );
 
+-- RLS
 alter table futebol_robos enable row level security;
 alter table matches enable row level security;
 
-create policy "liberar tudo times"
-on futebol_robos for all using (true);
+-- 🔥 policies completas
+create policy "full access futebol_robos"
+on futebol_robos
+for all
+using (true)
+with check (true);
 
-create policy "liberar tudo matches"
-on matches for all using (true);
+create policy "full access matches"
+on matches
+for all
+using (true)
+with check (true);
