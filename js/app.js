@@ -1,6 +1,7 @@
 'use strict'
 
 import supabase from './supabase.js'
+import { initMenu } from './menu.js'
 
 /* --- 1. DADOS (AGORA VINDOS DO BANCO) --- */
 let gamesData = []
@@ -200,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarJogos()
   ativarRealtime()
   carregarHeader()
+  initMenu()
 
   setInterval(updateTimer, 1000)
 })

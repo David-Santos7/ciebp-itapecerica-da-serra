@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CIEBP - Itapecerica da Serra</title>
+    <script src="./js/supabase.js"></script>
+
  
   <link rel="icon" type="image/x-icon" href="/imagem/favicon/favicon.ico" >
   
@@ -65,7 +67,7 @@
         <img src="/imagem/logo-ciebp.png" alt="logo-ciebp" class="h-10 md:h-12 w-auto object-contain">
       </div>
       
-      <button id="btn-mobile-menu" class="lg:hidden text-[#193375] p-1 focus:outline-none" aria-label="Abrir Menu">
+      <button id="btn-mobile-menu" class="lg:hidden text-[#193375] p-1 focus:outline-none" aria-label="Abrir Menu" aria-expanded="false" aria-controls="mobile-menu">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -324,7 +326,7 @@
 
 </footer>
 
-  <script src="./js/app.js"></script>
+  <script type="module" src="./js/app.js"></script>
   <script src="./js/carrousel.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="./tailwind.config.js"></script>
@@ -332,7 +334,6 @@
   <script src="./js/resultado.js"></script>
   <script src="./js/aovivo.js"></script>
   <script src="./js/mapa.js"></script>
-  <script src="./js/supabase.js"></script>
   <script src="./js/chaveamento.js"></script>
 
   <script>
