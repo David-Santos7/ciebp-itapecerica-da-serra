@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CIEBP - Dashboard</title>
-  <script src="./js/supabase.js" defer></script>
+    <head>
+    <meta charset="UTF-8">
+        <title>Dashboard - CIEBP</title>
 
-  <link rel="icon" type="image/x-icon" href="./imagem/favicon/favicon.ico" >
-  <script>
-    tailwind.config = { theme: { extend: { colors: { 'ciebp-blue': '#002B5B', 'ciebp-pink': '#FF007A', 'brasil-yellow':'#0c87d1', 'brasil-green':'#302681' }, borderRadius:{'xl-custom':'2rem'} } } };
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./css/main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
-</head>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="./js/supabase.js"></script>
+        <script src="./js/tabela.js"></script>
+
+
+        <link rel="icon" type="image/x-icon" href="/imagem/favicon/favicon.ico" >
+
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="css/styles.css" />
+        <link rel="stylesheet" href="css/box-shadow.css" />
+        <link rel="stylesheet" href="css/tabela.css" />
+        <link rel="stylesheet" href="css/dashboard.css" />
+        <link rel="stylesheet" href="css/detail.css" />
+        <link rel="stylesheet" href="css/aovivo.css" />
+        <link rel="stylesheet" href="css/projeto.css" />
+        <link rel="stylesheet" href="css/mapa.css" />
+        <link rel="stylesheet" href="css/carrossel.css" />
+
+
+
+
+        <link rel="stylesheet" type="text/tailwindcss" href="/css/tabela.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    </head>
 <body class="bg-[#F4F6FB] text-[#111827]">
 
 <header class="bg-white border-b border-gray-200 sticky top-0 z-[100] shadow-sm">
