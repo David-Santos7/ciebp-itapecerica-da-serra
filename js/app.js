@@ -1,4 +1,17 @@
-import { initMenu } from './menu.js';
+
+import { initMenu } from './menu.js'
+import { initPartidas } from './init/initPartidas.js'
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    initMenu()
+
+    initPartidas()
+
+  }
+)
 
 function initApp() {
     initMenu();

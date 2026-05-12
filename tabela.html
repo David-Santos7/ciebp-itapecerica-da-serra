@@ -16,7 +16,13 @@
   <link rel="icon" type="image/x-icon" href="/imagem/favicon/favicon.ico" >
   
 
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- GOOGLE FONTS -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
   <link rel="stylesheet" href="./css/styles.css" />
   <link rel="stylesheet" href="./css/box-shadow.css" />
   <link rel="stylesheet" href="./css/tabela.css" />
@@ -24,8 +30,18 @@
   <link rel="stylesheet" href="./css/detail.css" />
   <link rel="stylesheet" href="./css/aovivo.css" />
   <link rel="stylesheet" href="./css/projeto.css" />
-  <link rel="stylesheet" type="text/tailwindcss" href="./css/tabela.css">
 
+  <!-- SUPABASE -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"
+    defer
+  ></script>
+
+  <!-- TAILWIND -->
+  <script
+    src="https://cdn.tailwindcss.com"
+    defer
+  ></script>
 
 </head>
 <body class="bg-[#F4F6FB] text-[#111827]">
@@ -158,11 +174,11 @@
     <h2 class="text-3xl font-bold text-[#193375] mb-6">
       Crie seu chaveamento personalizado para o torneio em sua escola. 
     </h2>
-      <p class="destaque">⚠️ Utilize o link e crie um chavemento para o controle de partidas em sua escola!</p>
+      <p class="destaque">⚠️ Utilize o link e crie um chavemento para o controle de partidas em sua escola, ou seja, de forma Local!</p>
 
     <div class="mt-6 text-center">
       <a href="local.html" class="bg-[#E91E8C] hover:bg-[#d41880] text-white px-6 py-3 rounded-full font-bold transition">
-        Estatísticas
+        Tabela Local
       </a>
     </div>
 
@@ -171,28 +187,93 @@
 
 </section>
 
-<!-- ========================= -->
-<!-- CHAVEAMENTO -->
-<!-- ========================= -->
+    <!-- ========================= -->
+    <!-- PARTIDAS DINÂMICAS -->
+    <!-- ========================= -->
 
-<section class="max-w-[1400px] mx-auto px-6 pb-16">
 
-  <div class="bg-white rounded-xl shadow p-6">
 
-    <h2 class="text-3xl font-bold text-[#193375] mb-6">
-      Chaveamento do Torneio 
-    </h2>
-    <div class="mt-6 text-right">
-      <a href="dashboard.html" class="bg-[#E91E8C] hover:bg-[#d41880] text-white px-6 py-3 rounded-full font-bold transition">
-        Estatísticas
-      </a>
-    </div>
+        
 
-    <div id="bracket-ui" class="min-h-[400px] flex flex-col gap-3"></div>
 
-  </div>
 
-</section>
+        <!-- CONTAINER DINÂMICO -->
+        <section
+          id="partidas-container"
+          class="
+            grid
+            gap-4
+            md:grid-cols-2
+            xl:grid-cols-3
+          "
+        >
+        
+      </section>
+
+      
+
+      </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- CHAVEAMENTO -->
+    <!-- ========================= -->
+  
+    <section class="max-w-[1400px] mx-auto px-6 pb-10">
+
+      <div class="bg-white rounded-xl shadow p-6">
+
+        <div class="flex items-center justify-between mb-8">
+
+          <div>
+
+            <h2 class="text-3xl font-bold text-[#193375]">
+              Partidas do Torneio
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+              Dados sincronizados com Supabase
+            </p>
+
+          </div>
+
+          <a
+            href="dashboard.html"
+            class="
+              bg-[#E91E8C]
+              hover:bg-[#d41880]
+              text-white
+              px-6
+              py-3
+              rounded-full
+              font-bold
+              transition
+            "
+          >
+            Dashboard
+          </a>
+
+        </div>
+        <hr class="linha-rosa">
+        <br>
+        
+        <h2 class="text-3xl font-bold text-center text-[#193375] mb-6">
+          Chaveamento do Torneio 🏆 </h2> 
+          <div>
+        <div
+          id="bracket-ui"
+          class="
+            min-h-[400px]
+            flex
+            flex-col
+            gap-3
+          "
+        ></div>
+
+      </div>
+
+    </section>
 
 
   <section class="bg-white border-t border-gray-200 py-20" id="regras">
