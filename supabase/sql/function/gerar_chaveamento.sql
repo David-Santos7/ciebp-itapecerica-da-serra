@@ -1,46 +1,49 @@
-create or replace function gerar_chaveamento()
-
+create or replace function gerar_semifinais()
 returns void
-
 language plpgsql
-
 as $$
 
 declare
-
-  time1 bigint;
-  time2 bigint;
-  time3 bigint;
-  time4 bigint;
+    primeiro_a bigint;
+    segundo_a bigint;
+    primeiro_b bigint;
+    segundo_b bigint;
 
 begin
 
-  select id into time1
-  from classificacao_view
-  limit 1;
+    select id into primeiro_a
+    from teams
+    where grupo = 'A'
+    order by pontos desc, saldo desc
+    limit 1;
 
-  select id into time2
-  from classificacao_view
-  offset 1 limit 1;
+    select id into segundo_a
+    from teams
+    where grupo = 'A'
+    order by pontos desc, saldo desc
+    offset 1 limit 1;
 
-  select id into time3
-  from classificacao_view
-  offset 2 limit 1;
+    select id into primeiro_b
+    from teams
+    where grupo = 'B'
+    order by pontos desc, saldo desc
+    limit 1;
 
-  select id into time4
-  from classificacao_view
-  offset 3 limit 1;
+    select id into segundo_b
+    from teams
+    where grupo = 'B'
+    order by pontos desc, saldo desc
+    offset 1 limit 1;
 
-  insert into matches (
-    team_a,
-    team_b,
-    fase
-  )
-
-  values
-    (time1, time4, 'SEMIFINAL'),
-    (time2, time3, 'SEMIFINAL');
+    insert into matches (
+        time_a,
+        time_b,
+        fase,
+        status
+    )
+    values
+    (primeiro_a, segundo_b, 'SEMIFINAL', 'AGENDADO'),
+    (primeiro_b, segundo_a, 'SEMIFINAL', 'AGENDADO');
 
 end;
-
 $$;
