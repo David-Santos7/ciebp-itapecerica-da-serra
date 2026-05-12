@@ -1,6 +1,10 @@
-import { buscarClassificacao } from '../services/tabelaService.js'
+import { buscarClassificacao } from '../service/tabelaService.js'
+import { db } from '../config/supabase.js'
 
-document.addEventListener('DOMContentLoaded', carregarTabela)
+document.addEventListener('DOMContentLoaded', () => {
+  carregarTabela()
+  initRealtimeTabela()
+})
 
 async function carregarTabela() {
 
@@ -47,5 +51,21 @@ async function carregarTabela() {
     `
 
     console.error(error)
+  }
+}
+
+// Realtime subscription for tabela
+export function initRealtimeTabela() {
+  try {
+    db.channel('public:matches')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+        carregarTabela().catch(console.error)
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'teams' }, () => {
+        carregarTabela().catch(console.error)
+      })
+      .subscribe()
+  } catch (err) {
+    console.error('Realtime init failed (tabela):', err)
   }
 }

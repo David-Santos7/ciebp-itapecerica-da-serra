@@ -1,4 +1,4 @@
-import { buscarPartidas } from '../services/partidasService.js'
+import { buscarPartidas } from '../service/partidaService.js'
 
 document.addEventListener(
   'DOMContentLoaded',

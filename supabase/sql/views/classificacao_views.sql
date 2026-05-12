@@ -62,12 +62,12 @@ with dados as (
 
   left join matches m
     on (
-      m.team_a = t.id
+      m.time_a = t.id
       or
-      m.team_b = t.id
+      m.time_b = t.id
     )
 
-  where m.encerrada = true
+  where m.status = 'FINALIZADO'
 
   group by t.id, t.nome
 )

@@ -1,11 +1,10 @@
-import {
-  buscarPartidas
-} from '../services/partidaService.js'
+import { buscarPartidas } from '../service/partidaService.js'
+import { db } from '../config/supabase.js'
 
-document.addEventListener(
-  'DOMContentLoaded',
-  carregarAoVivo
-)
+document.addEventListener('DOMContentLoaded', () => {
+  carregarAoVivo()
+  initRealtimeAovivo()
+})
 
 async function carregarAoVivo() {
 
@@ -45,5 +44,18 @@ async function carregarAoVivo() {
   } catch (error) {
 
     console.error(error)
+  }
+}
+
+// Realtime subscription for ao vivo
+export function initRealtimeAovivo() {
+  try {
+    db.channel('public:matches')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+        carregarAoVivo().catch(console.error)
+      })
+      .subscribe()
+  } catch (err) {
+    console.error('Realtime init failed (aovivo):', err)
   }
 }

@@ -1,22 +1,23 @@
-const supabase = window.supabaseClient;
+import { db } from './config/supabase.js'
 
 async function loadDashboard() {
 
-  const { data: matches } = await supabase
+  const { data: matches, error } = await db
     .from('matches')
-    .select(`
-      *,
-      team_a:team_a_id(nome_equipe),
-      team_b:team_b_id(nome_equipe),
-      winner:winner_id(nome_equipe)
-    `);
+    .select(`*
+    `)
+
+  if (error) {
+    console.error('Error loading dashboard matches:', error)
+    return
+  }
 
   const stats = {};
 
-  matches.forEach(m => {
-    const a = m.team_a?.nome_equipe;
-    const b = m.team_b?.nome_equipe;
-    const w = m.winner?.nome_equipe;
+  (matches || []).forEach(m => {
+    const a = m.team_a?.nome || m.teamA?.nome || null;
+    const b = m.team_b?.nome || m.teamB?.nome || null;
+    const w = null; // original schema didn't provide winner lookup here
 
     if (!a || !b) return;
 
@@ -37,9 +38,28 @@ async function loadDashboard() {
 
   const list = document.getElementById("ranking-list");
 
-  list.innerHTML = ranking.map((t, i) => `
-    <li>${i+1}º ${t.team} - ${t.wins} vitórias</li>
-  `).join('');
+  if (list) {
+    list.innerHTML = ranking.map((t, i) => `
+      <li>${i+1}º ${t.team} - ${t.wins} vitórias</li>
+    `).join('');
+  }
 }
 
-loadDashboard();
+export function initRealtimeDashboard() {
+  loadDashboard().catch(console.error)
+
+  try {
+    db.channel('public:matches')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+        loadDashboard().catch(console.error)
+      })
+      .subscribe()
+  } catch (err) {
+    console.error('Realtime init failed (dashboard):', err)
+  }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+  initRealtimeDashboard()
+})
