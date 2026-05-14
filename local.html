@@ -141,7 +141,7 @@
 
 		<!-- BOTÃO -->
 		<div class="mt-6 text-right">
-			<button id="btnGerar" onclick="gerarChaveamento()"
+			<button id="btnGerar" onclick="gerarChaveamentoLocal()"
 				class="bg-[#E91E8C] hover:bg-[#d41880] text-white px-6 py-3 rounded-full font-bold transition">
 				Gerar Chaveamento
 			</button>
@@ -153,8 +153,8 @@
 
 <!-- ========================= -->
 <!-- CHAVEAMENTO -->
-<!-- ========================= -->
-
+<!-- =========================
+-->
 <section class="max-w-[1400px] mx-auto px-6 pb-16">
 
 	<div class="bg-white rounded-xl shadow p-6">
@@ -162,25 +162,13 @@
 		<h2 class="text-3xl font-bold text-[#193375] mb-6">
 			Chaveamento do Torneio 
 		</h2>
-		<div class="mt-6 text-right">
-			<a href="dashboard.html" class="bg-[#E91E8C] hover:bg-[#d41880] text-white px-6 py-3 rounded-full font-bold transition">
-				Estatísticas
-			</a>
-		</div>
-
-	<!-- Iframe do Copa Fácil assumindo as classes e o ID da estrutura original -->
-	<iframe
-		id="bracket-ui"
-		class="w-full min-h-[600px] border-0 rounded-xl shadow-inner bg-gray-50 flex flex-col gap-3"
-		src="https://copafacil.com/-oasum"
-		title="Chaveamento de Partidas - Copa Fácil"
-		allowfullscreen>
-	</iframe>
+		
+		<!-- Container onde as chaves locais serão desenhadas -->
+		<div id="bracket-ui-local" class="w-full min-h-[400px] border-0 rounded-xl shadow-inner bg-gray-50 flex flex-col gap-3 mt-6 p-4"></div>
 
 	</div>
 
 </section>
-
 
 	<section class="bg-white border-t border-gray-200 py-20" id="regras">
 		<div class="max-w-[1400px] mx-auto px-6">
@@ -317,7 +305,52 @@
 	<!-- local table handlers (local-only) -->
 	<script src="./js/tabela-local.js"></script>
 
-
+	<script>
+		// Função 100% Local que lê os times digitados e gera o Chaveamento
+		window.gerarChaveamentoLocal = function() {
+			const tableBody = document.getElementById('table-body');
+			const timesLocais = [];
+			
+			// 1. Interliga as informações lendo as linhas recém adicionadas na Tabela
+			if (tableBody) {
+				const rows = tableBody.querySelectorAll('tr');
+				rows.forEach(row => {
+					const cols = row.querySelectorAll('td');
+					if (cols.length >= 2) {
+						timesLocais.push({ escola: cols[0].innerText, nome: cols[1].innerText });
+					}
+				});
+			}
+			
+			if (timesLocais.length < 2) {
+				alert("Adicione pelo menos 2 times na tabela para gerar um chaveamento!");
+				return;
+			}
+			
+			const bracketContainer = document.getElementById('bracket-ui-local');
+			if (!bracketContainer) return;
+			
+			// 2. Embaralha os times aleatoriamente para o sorteio e limpa a tela
+			timesLocais.sort(() => Math.random() - 0.5);
+			let html = '<h3 class="text-xl font-bold text-[#193375] mb-4 text-center">🏆 Confrontos Iniciais Sorteados</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+			
+			// 3. Monta o visual ligando Time A vs Time B
+			for (let i = 0; i < timesLocais.length; i += 2) {
+				const timeA = timesLocais[i];
+				const timeB = timesLocais[i+1] || { nome: 'Classificado direto (W.O)', escola: '-' };
+				
+				html += `
+					<div class="bg-white border-2 border-gray-100 p-4 rounded-lg shadow-sm hover:border-[#0C87D1] transition">
+						<div class="flex justify-between items-center border-b pb-2 mb-2"><span class="font-bold text-gray-700">${timeA.nome}</span><span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">${timeA.escola}</span></div>
+						<div class="flex justify-between items-center"><span class="font-bold text-gray-700">${timeB.nome}</span><span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">${timeB.escola}</span></div>
+					</div>`;
+			}
+			
+			bracketContainer.innerHTML = html + '</div>';
+			// Rola a tela até o chaveamento gerado
+			bracketContainer.scrollIntoView({ behavior: 'smooth' });
+		}
+	</script>
 
 </body>
 </html>
