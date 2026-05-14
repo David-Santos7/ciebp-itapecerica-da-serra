@@ -1,26 +1,21 @@
 
 import { initMenu } from './menu.js'
-import { initPartidas } from './init/initPartidas.js'
-
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-
-    initMenu()
-
-    initPartidas()
-
-  }
-)
 
 function initApp() {
-    initMenu();
-    
-    // Instancie aqui outras funções globais do seu app...
+  // Inicializações globais únicas
+  initMenu();
+  
+  // Importação dinâmica: protege o funcionamento do Menu.
+  // Se algum arquivo secundário falhar, o menu mobile não deixará de funcionar!
+  import('./pages/initPartidas.js')
+    .then(module => {
+      if (module.initPartidas) module.initPartidas();
+    })
+    .catch(err => console.warn('Carregamento de partidas falhou, mas o menu está ativo:', err));
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
+  document.addEventListener('DOMContentLoaded', initApp);
 } else {
-    initApp();
+  initApp();
 }

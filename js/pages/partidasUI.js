@@ -26,10 +26,10 @@ export function criarCardPartida(partida) {
       ">
 
         <span class="
-          text-cyan-400
-          text-xs
-          font-bold
-        ">
+            text-cyan-400
+            text-xs
+            font-bold
+          ">
           Rodada ${partida.round}
         </span>
 
@@ -58,7 +58,12 @@ export function criarCardPartida(partida) {
             text-white
             font-bold
           ">
-            ${partida.team_a}
+            ${
+              partida?.team_a?.nome_equipe ||
+              partida?.teamA?.nome ||
+              partida?.team_a ||
+              'TBD'
+            }
           </h3>
 
         </div>
@@ -97,7 +102,12 @@ export function criarCardPartida(partida) {
             text-white
             font-bold
           ">
-            ${partida.team_b}
+            ${
+              partida?.team_b?.nome_equipe ||
+              partida?.teamB?.nome ||
+              partida?.team_b ||
+              'TBD'
+            }
           </h3>
 
         </div>

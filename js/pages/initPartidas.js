@@ -4,11 +4,11 @@
 
 import {
   buscarPartidas
-} from '../services/partidasService.js'
+} from '../service/partidasService.js'
 
 import {
   criarCardPartida
-} from '../ui/partidasUI.js'
+} from './partidasUI.js'
 
 /**
  * Renderizar partidas

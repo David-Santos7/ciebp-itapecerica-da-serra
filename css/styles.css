@@ -360,6 +360,24 @@ header nav a:hover::after, header nav a.active::after {
     border: 1px solid var(--pink-action);
 }
 
+/* ================================================================
+   MENU MOBILE - Proteção de Responsividade
+   ================================================================ */
+#mobile-menu {
+    display: none;
+}
+
+#mobile-menu:not(.hidden) {
+    display: block;
+}
+
+/* Em telas lg e maiores, o menu fica sempre oculto */
+@media (min-width: 1024px) {
+    #mobile-menu {
+        display: none !important;
+    }
+}
+
 .aovivo {
     font-family: 'Barlow', sans-serif; /* Trocado de Bebas para Barlow */
     font-size: clamp(3rem, 6vw, 4.5rem);

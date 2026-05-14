@@ -8,42 +8,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function carregarAoVivo() {
 
-  const container =
-    document.getElementById('aovivo')
+  const container = document.getElementById('aovivo')
+
+  if (!container) {
+    console.warn('Container #aovivo não encontrado no DOM — pulando renderização ao vivo')
+    return
+  }
 
   try {
-
-    const partidas =
-      await buscarPartidas()
-
-    const aoVivo = partidas.filter(
-      partida => !partida.encerrada
-    )
+    const partidas = await buscarPartidas()
+    const aoVivo = Array.isArray(partidas) ? partidas.filter(p => p && p.status === 'live') : []
 
     container.innerHTML = ''
 
+    if (aoVivo.length === 0) {
+      const empty = document.createElement('div')
+      empty.className = 'card-aovivo empty'
+      empty.textContent = 'Nenhum jogo ao vivo no momento'
+      container.appendChild(empty)
+      return
+    }
+
+    const frag = document.createDocumentFragment()
+
     aoVivo.forEach(partida => {
+      const card = document.createElement('div')
+      card.className = 'card-aovivo'
 
-      container.innerHTML += `
-        <div class="card-aovivo">
+      const h3 = document.createElement('h3')
+      h3.textContent = 'AO VIVO'
 
-          <h3>AO VIVO</h3>
+      const details = document.createElement('div')
+      const teamAName = partida.teamA?.nome || '-'
+      const teamBName = partida.teamB?.nome || '-'
+      const golsA = typeof partida.gols_a === 'number' ? partida.gols_a : (partida.gols_a ?? 0)
+      const golsB = typeof partida.gols_b === 'number' ? partida.gols_b : (partida.gols_b ?? 0)
 
-          <div>
-            ${partida.teamA.nome}
-            ${partida.gols_a}
-            x
-            ${partida.gols_b}
-            ${partida.teamB.nome}
-          </div>
+      details.textContent = `${teamAName} ${golsA} x ${golsB} ${teamBName}`
 
-        </div>
-      `
+      card.appendChild(h3)
+      card.appendChild(details)
+      frag.appendChild(card)
     })
 
+    container.appendChild(frag)
   } catch (error) {
-
-    console.error(error)
+    console.error('Erro ao carregar partidas ao vivo:', error)
   }
 }
 
