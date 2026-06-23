@@ -342,8 +342,8 @@
 
     normalizeCards();
     buildQuickLinks();
-    createResultsStatus();
-    createEmptyState();
+    //createResultsStatus();
+    //createEmptyState();
     filterSchools();
     animateCards();
     applyInitialState();

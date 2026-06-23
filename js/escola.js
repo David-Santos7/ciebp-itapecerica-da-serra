@@ -512,7 +512,7 @@
 
     const cards = sortCardsByNumber(rawCards);
     const searchInput = document.getElementById(CONFIG.searchInputId);
-    const searchStatus = createSearchStatus(searchInput);
+    const searchStatus = null;
     const backToTopButton = createBackToTopButton();
 
     validateSchools(cards);
